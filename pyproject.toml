@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "g8scope-fastapi"
+version = "1.0.0"
+description = "FastAPI/Starlette adapter for the g8scope error-capture platform"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "Developers Hub Sdn Bhd" }]
+keywords = ["g8scope", "fastapi", "starlette", "error", "observability", "monitoring"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Framework :: FastAPI",
+    "Topic :: System :: Monitoring",
+]
+# g8scope is the runtime SDK. It is currently unpublished — install it as an
+# editable local dependency alongside this package:
+#   python3 -m pip install --user -e ../g8scope-python
+# Once published to PyPI this entry resolves normally.
+dependencies = ["g8scope"]
+
+[project.optional-dependencies]
+fastapi = ["fastapi", "starlette"]
+dev = ["pytest", "fastapi", "starlette", "httpx"]
+
+[project.urls]
+Homepage = "https://scope.g8suite.com"
+Repository = "https://github.com/developers-hub-my/g8scope-fastapi"
+
+[tool.setuptools.packages.find]
+include = ["g8scope_fastapi*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
