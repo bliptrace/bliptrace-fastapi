@@ -1,9 +1,9 @@
-# g8scope-fastapi
+# bliptrace-fastapi
 
 FastAPI / Starlette adapter for [g8scope](https://scope.g8suite.com) — the
 central, runtime-agnostic error-capture and observability platform.
 
-This is a **thin** adapter over the runtime [`g8scope`](../g8scope-python) Python
+This is a **thin** adapter over the runtime [`g8scope`](../bliptrace-python) Python
 SDK. It adds an ASGI middleware that captures unhandled exceptions from your
 FastAPI (or any Starlette) application, enriches them with request context, ships
 them to the g8scope ingest API — and then re-raises so your app's normal error
@@ -18,7 +18,7 @@ The runtime SDK `g8scope` is currently unpublished, so install it as an editable
 local dependency first:
 
 ```bash
-python3 -m pip install --user -e ../g8scope-python
+python3 -m pip install --user -e ../bliptrace-python
 python3 -m pip install --user -e .          # this adapter
 python3 -m pip install --user fastapi        # if not already present
 ```
@@ -87,7 +87,7 @@ leaves the process.
 ## Testing
 
 ```bash
-python3 -m pip install --user -e ../g8scope-python
+python3 -m pip install --user -e ../bliptrace-python
 python3 -m pip install --user pytest fastapi httpx
 python3 -m pytest -q
 ```
