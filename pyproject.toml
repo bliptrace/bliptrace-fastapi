@@ -28,7 +28,7 @@ fastapi = ["fastapi", "starlette"]
 dev = ["pytest", "fastapi", "starlette", "httpx"]
 
 [project.urls]
-Homepage = "https://scope.g8suite.com"
+Homepage = "https://bliptrace.com"
 Repository = "https://github.com/bliptrace/bliptrace-fastapi"
 
 [tool.setuptools.packages.find]

@@ -1,6 +1,6 @@
 # bliptrace-fastapi
 
-FastAPI / Starlette adapter for [Bliptrace](https://scope.g8suite.com) — the
+FastAPI / Starlette adapter for [Bliptrace](https://bliptrace.com) — the
 central, runtime-agnostic error-capture and observability platform.
 
 This is a **thin** adapter over the runtime [`bliptrace`](../bliptrace-python) Python
@@ -67,7 +67,7 @@ internal `client`) are forwarded to `bliptrace.Config`:
 | Option | Default | Description |
 |---|---|---|
 | `key` | `None` | Ingest key. Nothing is sent without it. |
-| `endpoint` | `https://ingest.scope.g8suite.com` | Ingest API base URL. |
+| `endpoint` | `https://ingest.bliptrace.com` | Ingest API base URL. |
 | `environment` | `production` | Deployment environment label. |
 | `release` | `None` | Release / version identifier. |
 | `base_path` | `""` | App root path, used for in-app frame detection. |
