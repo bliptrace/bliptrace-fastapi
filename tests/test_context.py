@@ -3,7 +3,7 @@
 No FastAPI required: a tiny fake request that quacks like a Starlette Request.
 """
 
-from g8scope_fastapi import request_context
+from bliptrace_fastapi import request_context
 
 
 class _Headers:

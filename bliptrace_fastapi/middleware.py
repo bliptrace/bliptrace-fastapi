@@ -1,10 +1,10 @@
-"""FastAPI/Starlette glue over the g8scope Python SDK.
+"""FastAPI/Starlette glue over the Bliptrace Python SDK.
 
 A thin :class:`~starlette.middleware.base.BaseHTTPMiddleware` that wraps the
 downstream handler, captures any unhandled exception via the runtime SDK, and
 re-raises so FastAPI's normal error handling continues unchanged.
 
-Design rule (from the g8scope spec): capturing must NEVER break the host app.
+Design rule (from the Bliptrace spec): capturing must NEVER break the host app.
 Every step on the capture path is guarded; a failure there is swallowed and the
 original exception always propagates.
 
@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from typing import Any, Optional
 
-from g8scope import Client, Config
+from bliptrace import Client, Config
 
 from .context import request_context
 
@@ -35,16 +35,16 @@ def _build_client(client: Optional[Client], **config: Any) -> Client:
     return Client(Config(**config))
 
 
-class G8ScopeMiddleware(_BASE):  # type: ignore[misc,valid-type]
+class BliptraceMiddleware(_BASE):  # type: ignore[misc,valid-type]
     """Capture unhandled exceptions from FastAPI/Starlette requests.
 
     Register with::
 
-        app.add_middleware(G8ScopeMiddleware, key="ingest-key", environment="production")
+        app.add_middleware(BliptraceMiddleware, key="ingest-key", environment="production")
 
-    The ``client`` keyword accepts a pre-built :class:`g8scope.Client` (used by
+    The ``client`` keyword accepts a pre-built :class:`bliptrace.Client` (used by
     tests with a fake transport). Any other keyword is forwarded to
-    :class:`g8scope.Config`.
+    :class:`bliptrace.Config`.
     """
 
     def __init__(
@@ -69,21 +69,21 @@ class G8ScopeMiddleware(_BASE):  # type: ignore[misc,valid-type]
             pass
 
 
-def add_g8scope(app: Any, client: Optional[Client] = None, **config: Any) -> None:
-    """Convenience helper: ``add_g8scope(app, key="...")``.
+def add_bliptrace(app: Any, client: Optional[Client] = None, **config: Any) -> None:
+    """Convenience helper: ``add_bliptrace(app, key="...")``.
 
-    Equivalent to ``app.add_middleware(G8ScopeMiddleware, key="...")``.
+    Equivalent to ``app.add_middleware(BliptraceMiddleware, key="...")``.
     """
-    app.add_middleware(G8ScopeMiddleware, client=client, **config)
+    app.add_middleware(BliptraceMiddleware, client=client, **config)
 
 
-def g8scope_exception_handler(client: Client) -> Any:
+def bliptrace_exception_handler(client: Client) -> Any:
     """Build a FastAPI exception handler variant.
 
     Some apps prefer an explicit handler over middleware. Register with::
 
         client = Client(Config(key="..."))
-        app.add_exception_handler(Exception, g8scope_exception_handler(client))
+        app.add_exception_handler(Exception, bliptrace_exception_handler(client))
 
     The handler captures, then re-raises so FastAPI's default 500 handling runs.
     Capture is fully guarded and never masks the original exception.

@@ -1,4 +1,4 @@
-"""Integration + unit tests for the g8scope FastAPI adapter.
+"""Integration + unit tests for the Bliptrace FastAPI adapter.
 
 A FakeTransport records shipped envelopes — no network. Where FastAPI/Starlette
 are installed (the preferred path) we drive a real app via the TestClient.
@@ -6,11 +6,11 @@ are installed (the preferred path) we drive a real app via the TestClient.
 
 import pytest
 
-from g8scope import Client, Config, Transport
+from bliptrace import Client, Config, Transport
 
-from g8scope_fastapi import (
-    G8ScopeMiddleware,
-    add_g8scope,
+from bliptrace_fastapi import (
+    BliptraceMiddleware,
+    add_bliptrace,
     request_context,
 )
 
@@ -33,7 +33,7 @@ class FakeTransport(Transport):
 
 def _app(client):
     app = FastAPI()
-    app.add_middleware(G8ScopeMiddleware, client=client)
+    app.add_middleware(BliptraceMiddleware, client=client)
 
     @app.get("/ok")
     def ok():
@@ -58,7 +58,7 @@ def test_captures_unhandled_exception_and_ships_envelope():
     assert len(t.sent) == 1
     env = t.sent[0]["envelope"]
     assert env["runtime"]["name"] == "python"
-    assert env["sdk"]["name"] == "g8scope-python"
+    assert env["sdk"]["name"] == "bliptrace-python"
     assert env["sdk"]["version"]
     assert env["exception"]["type"] == "RuntimeError"
     assert env["exception"]["message"] == "kaboom"
@@ -98,11 +98,11 @@ def test_no_key_sends_nothing():
     assert t.sent == []
 
 
-def test_add_g8scope_helper_registers_middleware():
+def test_add_bliptrace_helper_registers_middleware():
     t = FakeTransport()
     client = Client(Config(key="k"), t)
     app = FastAPI()
-    add_g8scope(app, client=client)
+    add_bliptrace(app, client=client)
 
     @app.get("/boom")
     def boom():
